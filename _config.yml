@@ -1,30 +1,49 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely edit after that. If you find
-# yourself editing these this file very often, consider using Jekyll's data files
-# feature for the data you need to update frequently.
-#
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'jekyll serve'. If you change this file, please restart the server process.
-
 # Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
-title: Nicola Fiorillo
-email: nicola.fiorillo@gmail.com
-description: > # this means to ignore newlines until "baseurl:"
-  Mobile and enterprise software architect, hosting a developer soul.
-  CTO at White Peaks Mobile Software Sagl.
-  Red Cross volunteer.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://nicolafiorillo.com" # the base hostname & protocol for your site
-twitter_username: nicolafiorillo
-github_username:  nicolafiorillo
+title: "Jekyll Resume Template"
+description: "A resume template for Jekyll and GitHub Pages sites."
 
 # Build settings
 markdown: kramdown
-theme: minima
-permalink: /blog/:year/:month/:day/:title
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Resume settings
+resume_avatar:                  "true"
+resume_name:                    "Nicola Fiorillo"
+resume_title:                   "Mobile solutions architect and developer."
+resume_contact_email:           "nicola.fiorillo@gmail.com"
+
+# use "yes" to display the email contact button,
+# "no" to display an "I'm not looking for work" message,
+# or remove the resume_looking_for_work option entirely
+# to leave blank
+resume_looking_for_work:        "yes"
+
+# Decide which sections to use
+# comment out to hide
+resume_section_experience:      true
+resume_section_education:       false
+resume_section_projects:        false
+resume_section_skills:          false
+resume_section_recognition:     false
+resume_section_links:           false
+resume_section_associations:    true
+
+# Resume social links
+# uncomment the options you wish to display, and add your own URL
+resume_social_links:
+  resume_github_url:            "https://github.com/nicolafiorillo"
+  resume_twitter_url:           "https://twitter.com/nicolafiorillo"
+  # resume_dribbble_url:          "https://dribbble.com/jag"
+  # resume_facebook_url:          "insert Facebook URL here"
+  resume_linkedin_url:          "https://www.linkedin.com/in/nicolafiorillo"
+  # resume_instagram_url:         "insert your Instagram URL here"
+  # resume_website_url:           "http://www.nicolafiorillo.com"
+
+# Design settings
+resume_theme:                   default
+
+# Note: when editing locally, remember to restart
+# your Jekyll server when you edit this file. Changes
+# to _config.yml are only recognized when the server starts
