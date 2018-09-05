@@ -1,3 +1,19 @@
 ---
-layout: resume
+layout: home
 ---
+
+<section id="about">
+	<div class="container">
+	  <div class="avatar">
+		<img class="img-circle" src="{{ site.baseurl }}static/img/{{ site.avatar }}" alt="Responsive image">
+	  </div>
+
+
+ 		<h3><strong>{{ site.author }}</strong></h3>
+ 		<h3>Software Engineer and Enterprise Software Architect specialized in mobile solutions and distributed architectures.</h3>
+  	<h3><b>Erlang/Elixir</b> evangelist.</h3>
+
+	  <h3>Contact me by <a href="mailto:{{ site.email }}">email</a>.</h3>
+	  {% include social.html %}
+	</div>
+</section>
