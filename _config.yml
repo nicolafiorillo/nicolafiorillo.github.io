@@ -9,7 +9,6 @@ plugins: [jekyll-paginate]
 port: 3000
 safe: true
 
-
 # edit here to achieve your personal greatness
 url: https://www.nicolafiorillo.com/
 title: Nicola Fiorillo
@@ -23,8 +22,7 @@ linkedin: nicolafiorillo
 #stackoverflow: username   #e.g: users/2735833/proton1h1
 #Comment out if you don't want disqus
 #disqus: username
-google_analytics: UA-XXXXXXXX-1
-
+google_analytics: UA-50625867-1
 
 # needed for travis-ci build
 exclude: [vendor]
