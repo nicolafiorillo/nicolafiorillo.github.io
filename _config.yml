@@ -10,7 +10,7 @@ port: 3000
 safe: true
 
 # edit here to achieve your personal greatness
-url: https://www.nicolafiorillo.com/
+url: https://www.nicolafiorillo.com
 title: Nicola Fiorillo
 author: Nicola Fiorillo
 description: Personal web site

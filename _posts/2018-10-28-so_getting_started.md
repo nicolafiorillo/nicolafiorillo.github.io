@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Getting Started with the Seven Otters project
+title: Getting Started with the Seven Otters project
 tags:
 - Erlang
 - Elixir
