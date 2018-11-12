@@ -21,7 +21,8 @@ twitter: nicolafiorillo
 linkedin: nicolafiorillo
 #stackoverflow: username   #e.g: users/2735833/proton1h1
 #Comment out if you don't want disqus
-#disqus: username
+disqus: fiorillonicola
+
 google_analytics: UA-50625867-1
 
 # needed for travis-ci build
