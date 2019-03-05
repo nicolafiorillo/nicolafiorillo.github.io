@@ -8,3 +8,5 @@ Gemfile.lock
 
 # others
 *.swp
+
+.sass-cache/
