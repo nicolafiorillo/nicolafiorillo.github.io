@@ -1,0 +1,25 @@
+---
+layout: layout
+title: Notes
+---
+
+<div class="container">
+<h3>Notes</h3>
+<h5>useful information gathered along the way</h5>
+  <div class="panel panel-default">
+    <div class="panel-body">
+		{% for note in site.notes %}
+			<div class="row">
+				 <div class="col-sm-2 col-md-2 col-lg-2"></div>
+				 <div class="col-sm-8 col-md-8 col-lg-8">
+					 <h5 style="text-align: left">
+					 	<a href="{{ site.url }}{{ note.url }}">{{ note.title }}</a>
+						<small> (last update {{ note.date  | date: "%d/%m/%Y" }})</small>
+					 </h5>
+				 </div>
+				 <div class="col-sm-2 col-md-2 col-lg-2"></div>
+			</div>
+	    {% endfor %}
+	</div>
+  </div>
+</div>

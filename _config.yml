@@ -9,6 +9,11 @@ plugins: [jekyll-paginate]
 port: 3000
 safe: true
 
+collections:
+  notes:
+    permalink: /notes/:path/
+    output: true
+    
 # edit here to achieve your personal greatness
 url: https://www.nicolafiorillo.com
 title: Nicola Fiorillo
