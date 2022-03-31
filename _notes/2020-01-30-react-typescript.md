@@ -219,6 +219,21 @@ setData(state => { return {...state, name: "Potter"}}}); // partial update
 - add side effects to function components (eg. Data fetching, setting up a subscription, and manually changing the DOM in React)
 - you tell React that your component needs to do something after render, React will remember the function you passed (we’ll refer to it as our "effect"), and call it later after performing the DOM updates
 
+```js
+const [status, setStatus] = useState("");
+
+const loadStatus = useCallback(async () => {
+  const [res, data] = await getStatus();
+  setStatus(data);
+}, []);
+
+useEffect(() => {
+  void loadStatus();
+}, [loadStatus]);
+
+return <div>{status}</div>;
+```
+
 ### `memo` (not a hook)
 
 - memorize a component
@@ -391,4 +406,12 @@ import { Trans, withTranslation } from "react-i18next";
 <Suspense fallback={null}>
   <App />
 </Suspense>
+```
+
+# Debugging
+
+```css
+* {
+  outline: 1px solid red;
+}
 ```
