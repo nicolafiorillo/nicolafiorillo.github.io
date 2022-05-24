@@ -109,6 +109,7 @@ List of component without a div container
 
 ### Inline styling
 
+{% raw %}
 ```js
 function House() {
   const [color, setColor] = useState("red");
@@ -119,6 +120,7 @@ function House() {
   );
 }
 ```
+{% endraw %}
 
 or
 
