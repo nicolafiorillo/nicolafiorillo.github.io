@@ -1,11 +1,3 @@
-# Nicola Fiorillo official web site
+# Nicola Fiorillo
 
-A Jekyll site powered by [Sustain](https://github.com/jekyller/sustain) template.
-
-## Install dependencies
-
-`bundle install`
-
-## Run site
-
-`bundle exec jekyll serve`
+Simple static home page.
