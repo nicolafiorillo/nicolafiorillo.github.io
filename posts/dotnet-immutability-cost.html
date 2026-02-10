@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The "Cost" of Immutability in .NET - Nicola Fiorillo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-neutral-50 text-neutral-800 min-h-screen">
+    <div class="max-w-2xl mx-auto px-6 py-16 md:py-24">
+
+        <!-- Header -->
+        <header class="mb-12">
+            <div class="flex justify-between items-start mb-8">
+                <a href="../til.html"
+                    class="text-neutral-500 hover:text-neutral-800 transition-colors text-sm flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Back to TIL
+                </a>
+                <span class="text-sm text-neutral-400 font-mono">2026-02-10</span>
+            </div>
+
+            <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-4">The "Cost" of Immutability in .NET
+            </h1>
+            <div class="flex gap-2">
+                <span class="text-xs font-medium text-neutral-500 bg-neutral-100 px-2 py-0.5 rounded">.NET</span>
+                <span class="text-xs font-medium text-neutral-500 bg-neutral-100 px-2 py-0.5 rounded">Performance</span>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <article class="prose prose-neutral max-w-none mb-16">
+            <p class="text-neutral-600 leading-relaxed mb-6">
+                In the .NET ecosystem, the "cost" of immutability is primarily measured in <strong>allocations</strong>
+                and <strong>GC (Garbage Collection) pressure</strong>. While C# has added features like
+                <code>records</code> and <code>init-only</code> properties to make immutability easier to write, it
+                handles the underlying memory differently than "pure" functional languages.
+            </p>
+
+            <p class="text-neutral-600 leading-relaxed mb-6">
+                Here is a high-level technical breakdown of how C# compares to Haskell, Elixir, Scala, and F#.
+            </p>
+
+            <hr class="my-8 border-neutral-200" />
+
+            <h3 class="text-xl font-medium mb-4">1. Structural Sharing vs. Defensive Copying</h3>
+
+            <p class="text-neutral-600 leading-relaxed mb-6">
+                The biggest "cost" in C# is that it lacks <strong>native persistent data structures</strong> in the
+                standard library (though <code>System.Collections.Immutable</code> exists).
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-neutral-600 mb-6">
+                <li><strong class="text-neutral-700">Haskell / Elixir / Scala / F#:</strong> Use <strong>Structural
+                        Sharing</strong>. When you "modify" a large list, these languages don't copy the whole thing.
+                    They create a new "head" that points to the existing "tail" of the data.</li>
+                <li><strong class="text-neutral-700">C#:</strong> If you use a standard <code>List&lt;T&gt;</code> and
+                    try to be immutable by returning <code>list.ToList()</code>, you are performing a <strong>Full
+                        Copy</strong>. This is $O(n)$ in time and memory.</li>
+            </ul>
+
+            <h3 class="text-xl font-medium mb-4">2. Allocation and GC Pressure</h3>
+
+            <p class="text-neutral-600 leading-relaxed mb-6">
+                C#'s Garbage Collector is a <strong>Generational Mark-and-Sweep</strong> collector. It is highly
+                optimized for "short-lived" objects (Generation 0).
+            </p>
+
+            <ul class="list-disc pl-5 space-y-2 text-neutral-600 mb-6">
+                <li><strong class="text-neutral-700">The "Cost" Advantage:</strong> In C#, creating many small,
+                    immutable objects is surprisingly cheap because the GC can clean up Gen 0 objects almost instantly.
+                </li>
+                <li><strong class="text-neutral-700">The "Cost" Penalty:</strong> If your immutable objects live long
+                    enough to be promoted to <strong>Generation 1 or 2</strong>, they become much more expensive to
+                    collect. Pure functional languages (like Haskell) often use a "copying collector" that is even more
+                    aggressive with short-lived data than .NET.</li>
+            </ul>
+
+            <h3 class="text-xl font-medium mb-4">3. Comparison Table: C# vs. The Field</h3>
+
+            <div class="overflow-x-auto mb-8">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-neutral-200">
+                            <th class="py-2 font-medium text-neutral-700">Feature</th>
+                            <th class="py-2 font-medium text-neutral-700">C# (14)</th>
+                            <th class="py-2 font-medium text-neutral-700">Haskell / Elixir</th>
+                            <th class="py-2 font-medium text-neutral-700">F# / Scala</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-neutral-600">
+                        <tr class="border-b border-neutral-100">
+                            <td class="py-2 font-medium text-neutral-700">Default State</td>
+                            <td class="py-2">Mutable</td>
+                            <td class="py-2">Immutable (Strict)</td>
+                            <td class="py-2">Immutable (Preferential)</td>
+                        </tr>
+                        <tr class="border-b border-neutral-100">
+                            <td class="py-2 font-medium text-neutral-700">Data Update</td>
+                            <td class="py-2"><code>with { }</code> (Copy)</td>
+                            <td class="py-2">Structural Sharing</td>
+                            <td class="py-2">Structural Sharing</td>
+                        </tr>
+                        <tr class="border-b border-neutral-100">
+                            <td class="py-2 font-medium text-neutral-700">Memory Layout</td>
+                            <td class="py-2">Contiguous (Fast cache)</td>
+                            <td class="py-2">Linked/Tree (Cache misses)</td>
+                            <td class="py-2">Mixed</td>
+                        </tr>
+                        <tr class="border-b border-neutral-100">
+                            <td class="py-2 font-medium text-neutral-700">Equality</td>
+                            <td class="py-2">Reference (Default)</td>
+                            <td class="py-2">Value/Structural</td>
+                            <td class="py-2">Value/Structural</td>
+                        </tr>
+                        <tr class="border-b border-neutral-100">
+                            <td class="py-2 font-medium text-neutral-700">Threading</td>
+                            <td class="py-2">Lock-heavy (if mutable)</td>
+                            <td class="py-2">Lock-free (by design)</td>
+                            <td class="py-2">Lock-free (mostly)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr class="my-8 border-neutral-200" />
+
+            <h3 class="text-xl font-medium mb-4">4. When the "Cost" becomes a "Profit"</h3>
+
+            <p class="text-neutral-600 leading-relaxed mb-6">
+                It's a common misconception that immutability is always slower. In modern C#, immutability can actually
+                <strong>increase</strong> performance in specific scenarios:
+            </p>
+
+            <ol class="list-decimal pl-5 space-y-2 text-neutral-600 mb-6">
+                <li><strong class="text-neutral-700">Thread Safety:</strong> A mutable object requires <code>lock</code>
+                    statements or <code>Monitor</code> entries to be thread-safe. Locks are incredibly expensive
+                    (context switching, CPU stalls). An immutable <code>record</code> requires <strong>zero
+                        locks</strong>, often making it faster in high-concurrency web apps (like ASP.NET Core).</li>
+                <li><strong class="text-neutral-700">Identity Cache:</strong> Since a pure, immutable object never
+                    changes, you can safely use it as a key in a <code>Dictionary</code> or cache its hash code. You
+                    never have to worry about the hash changing while it's in a collection.</li>
+            </ol>
+
+            <hr class="my-8 border-neutral-200" />
+
+            <h3 class="text-xl font-medium mb-4">Expert Strategy: The "Functional Core, Imperative Shell"</h3>
+
+            <p class="text-neutral-600 leading-relaxed mb-6">
+                In C# 14, the most performant way to use FP is the <strong>sandwich</strong> approach:
+            </p>
+
+            <ol class="list-decimal pl-5 space-y-2 text-neutral-600 mb-6">
+                <li><strong class="text-neutral-700">The Shell (Imperative):</strong> Use mutable logic for I/O, UI, and
+                    high-frequency loops where you need <code>O(1)</code> performance.</li>
+                <li><strong class="text-neutral-700">The Core (Functional):</strong> Use <code>records</code> and
+                    <code>IEnumerable</code> for your business logic.
+                </li>
+            </ol>
+
+            <blockquote class="border-l-4 border-neutral-200 pl-4 italic mb-6">
+                <p><strong>Warning:</strong> Avoid using <code>System.Collections.Immutable</code> in a tight
+                    <code>for</code> loop (e.g., adding 10,000 items to an <code>ImmutableList</code>). Because it lacks
+                    the specialized runtime optimizations of Haskell, it will be significantly slower than a mutable
+                    <code>List&lt;T&gt;</code> that you simply "freeze" or wrap in a <code>ReadOnlyCollection</code> at
+                    the end.
+                </p>
+            </blockquote>
+
+        </article>
+    </div>
+</body>
+
+</html>
